@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "$id": "schema:event:create:response",
+  "required": [
+    "id"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string"
+    }
+  }
+}

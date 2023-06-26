@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "$id": "schema:event:list:query",
+  "additionalProperties": false,
+  "required": [],
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "limit": {
+      "type": "integer"
+    },
+    "skip": {
+      "type": "integer"
+    }
+  }
+}

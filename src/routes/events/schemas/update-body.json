@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "$id": "schema:event:update:body",
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "startTime",
+    "endTime"
+  ],
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "startTime": {
+      "type": "string"
+    },
+    "endTime": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

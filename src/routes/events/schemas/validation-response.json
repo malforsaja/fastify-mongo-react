@@ -1,0 +1,16 @@
+{
+    "type": "object",
+    "$id": "schema:common:validation-error",
+    "required": [
+      "error", "message"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "error": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      }
+    }
+  }

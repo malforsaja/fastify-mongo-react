@@ -1,0 +1,50 @@
+{
+  "name": "fastify-ts-mongodb",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "check:types": "tsc --noEmit",
+    "build": "esbuild `find src \\( -name '*.ts' \\)` --platform=node --outdir=build --resolve-extensions=.js",
+    "start": "node build",
+    "dev": "tsx watch src .env | pino-pretty --colorize",
+    "pretest": "npm run build",
+    "test": "vitest",
+    "test:watch": "vitest -w"
+  },
+  "keywords": [],
+  "author": "Malfor Saja",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/autoload": "^5.7.1",
+    "@fastify/cors": "^8.3.0",
+    "@fastify/mongodb": "^7.0.0",
+    "@fastify/swagger": "^8.6.0",
+    "@fastify/swagger-ui": "^1.9.0",
+    "@sinclair/typebox": "^0.28.18",
+    "ajv": "^8.12.0",
+    "dotenv": "^16.3.1",
+    "env-schema": "^5.2.0",
+    "fastify": "^4.18.0",
+    "fastify-overview": "^3.3.2",
+    "fastify-plugin": "^4.5.0",
+    "mongodb": "^5.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "esbuild": "^0.18.9",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "pino-pretty": "^10.0.0",
+    "prettier": "^2.8.8",
+    "tsx": "^3.12.7",
+    "typescript": "^5.0.4",
+    "vitest": "^0.32.2"
+  }
+}

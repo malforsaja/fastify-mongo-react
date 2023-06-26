@@ -1,0 +1,16 @@
+{
+    "type": "object",
+    "$id": "schema:event:not-found-error",
+    "required": [
+      "error", "message"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "error": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      }
+    }
+  }

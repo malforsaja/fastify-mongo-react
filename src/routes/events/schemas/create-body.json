@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "$id": "schema:event:create:body",
+  "required": [
+    "title", "startTime", "endTime"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "startTime": {
+      "type": "string"
+    },
+    "endTime": {
+      "type": "string"
+    }
+  }
+}
