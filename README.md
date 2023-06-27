@@ -1,6 +1,5 @@
-# generate README content based on the project here
 
-## Installation of backend
+## Install backend
 1. Clone the repository
 2. Install the dependencies
    `npm install`
@@ -10,7 +9,7 @@
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 6. Check the [API documentation](https://localhost:3000/docs) for more information about the endpoints.
 
-## Installation of frontend
+## Install frontend
 1. Change directory to the frontend folder
    `cd ui`
 2. Install the dependencies
@@ -24,5 +23,3 @@
 - [ ] Add frontend testing
 - [ ] Add CI/CD github actions
 - [ ] Add docker support
-
-1. User ContextAPI for state management of some functions of the events
