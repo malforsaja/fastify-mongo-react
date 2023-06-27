@@ -81,7 +81,6 @@ export const EventManagement = () => {
     if (!event.id) {
       createEvent(event)
     } else {
-      console.log('update event', event);
       updateEvent(event)
     }
   };

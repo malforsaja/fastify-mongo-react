@@ -24,7 +24,6 @@ export const createEventFn = async (event) => {
 }
 
 export const updateEventFn = async (event) => {
-  console.log('api event', event);
   const { data } = await privateApi.put(`/events/${event.id}`, event);
   return data;
 }

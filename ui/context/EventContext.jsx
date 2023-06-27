@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createEventFn, deleteEventFn, updateEventFn } from '../apis/eventAPIs';
 import { QueryKeys } from '../utils/queryKeys';
@@ -79,11 +79,10 @@ export const EventProvider = ({ children }) => {
   };
 
   const handleDeleteEvent = (eventId) => {
-    console.log('deleteEvent', eventId);
     deleteEvent(eventId);
   };
 
-  const eventContextValue = {
+  const eventContextValue = useMemo(() => ({
     selectedEventId,
     selectedEvent,
     errorResponse,
@@ -93,7 +92,7 @@ export const EventProvider = ({ children }) => {
     handleDeleteEvent,
     handleCheckboxChange,
     setSelectedEventId,
-  };
+  }), []);
 
   return (
     <EventContext.Provider value={eventContextValue}>{children}</EventContext.Provider>

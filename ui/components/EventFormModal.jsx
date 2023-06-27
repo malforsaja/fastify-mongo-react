@@ -35,7 +35,6 @@ const EventFormModal = ({ event, onSubmit, onDelete, handleClose, isOpen, errorR
     }
   }, [event, setValue]);
 
-  console.log('event', event);
   return (
     <div>
       <Modal open={isOpen} onClose={handleClose}>

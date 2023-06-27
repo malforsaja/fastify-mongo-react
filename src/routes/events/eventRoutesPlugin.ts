@@ -173,18 +173,13 @@ export default function eventRoutes(fastify: FastifyInstance, _opts: FastifyPlug
   }, async (request, reply) => {
     try {
       const { id } = request.params;
-      console.log('id', id);
-      console.log('ObjectId.isValid(id)', ObjectId.isValid(id));
-      
       if (!ObjectId.isValid(id)) {
         return reply.status(400).send({
           error: 'ValidationError',
           message: 'The request params is invalid.',
         });
       }
-      const deletedEvent = await fastify.mongoDataSource.deleteEvent(id);
-      console.log('deleted event', deletedEvent);
-      
+      const deletedEvent = await fastify.mongoDataSource.deleteEvent(id);      
       return deletedEvent;
     } catch (error) {
       return reply.status(500).send({
