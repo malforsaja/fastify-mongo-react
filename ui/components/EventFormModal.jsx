@@ -7,18 +7,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchema } from "../utils/validations";
 import { red } from "@mui/material/colors";
 import { useEffect } from "react";
+import { useEventContext } from "../context/EventContext";
 
-const EventFormModal = ({ event, onSubmit, onDelete, handleClose, isOpen, errorResponse }) => {
+const EventFormModal = ({ event, handleClose, isOpen }) => {
   const { handleSubmit, register, control, formState: { errors }, setValue } = useForm({
     resolver: zodResolver(validationSchema)
   });
 
-  const handleFormSubmit = (data) => {
-    onSubmit({ ...event, ...data });
-  };
+  const { handleAddOrUpdateEvent, handleDeleteEvent, errorResponse } = useEventContext();
 
-  const handleFormDelete = () => {
-    onDelete(event);
+  const handleFormSubmit = (data) => {
+    handleAddOrUpdateEvent({ ...event, ...data });
   };
 
   useEffect(() => {
@@ -35,7 +34,6 @@ const EventFormModal = ({ event, onSubmit, onDelete, handleClose, isOpen, errorR
     }
   }, [event, setValue]);
 
-  console.log('event', event);
   return (
     <div>
       <Modal open={isOpen} onClose={handleClose}>
@@ -156,7 +154,7 @@ const EventFormModal = ({ event, onSubmit, onDelete, handleClose, isOpen, errorR
               </Button>
 
               {event && (
-                <Button onClick={handleFormDelete} variant="outlined">
+                <Button onClick={() => handleDeleteEvent(event.id)} variant="outlined">
                   Delete
                 </Button>
               )}

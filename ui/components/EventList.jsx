@@ -1,8 +1,10 @@
 import { Checkbox, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { format } from "date-fns";
 import PropTypes from 'prop-types';
+import { useEventContext } from "../context/EventContext";
 
-const EventList = ({ events, onSelectEvent, handleCheckboxChange, selectedEventId  }) => {
+const EventList = ({ events  }) => {
+  const { handleCheckboxChange, onSelectEvent, selectedEventId } = useEventContext();
   return (
     <div>
       <List>
@@ -40,9 +42,9 @@ const EventList = ({ events, onSelectEvent, handleCheckboxChange, selectedEventI
 
 EventList.propTypes = {
   events: PropTypes.array.isRequired,
-  onSelectEvent: PropTypes.func.isRequired,
-  handleCheckboxChange: PropTypes.func.isRequired,
-  selectedEventId: PropTypes.string.isRequired
+  //onSelectEvent: PropTypes.func.isRequired,
+  //handleCheckboxChange: PropTypes.func.isRequired,
+  //selectedEventId: PropTypes.string.isRequired
 };
 
 export { EventList }

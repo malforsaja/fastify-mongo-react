@@ -8,7 +8,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const EventContext = createContext();
 
-export const useEventContext = () => useContext(EventContext);
+export const useEventContext = () => {
+  const context = useContext(EventContext)
+  if (context === undefined) {
+    throw new Error('useEventContext must be used within a EventProvider')
+  }
+  return context
+};
 
 export const EventProvider = ({ children }) => {
   const [selectedEventId, setSelectedEventId] = useState('');
@@ -51,10 +57,7 @@ export const EventProvider = ({ children }) => {
     },
   });
 
-  const handleSelectEvent = (event) => {
-    // setSelectedEventId(eventId);
-    // Set the selectedEvent using the fetched data or fetch the event details separately
-    //const event = data.find((event) => event.id === eventId);
+  const onSelectEvent = (event) => {
     setSelectedEvent(event);
   };
 
@@ -63,10 +66,8 @@ export const EventProvider = ({ children }) => {
     const isChecked = e.target.checked;
     if (isChecked) {
       setSelectedEventId(eventId);
-      //setSelectedEvent(data.data.find((event) => event.id === eventId));
     } else {
       setSelectedEventId('');
-      //setSelectedEvent(null);
     }
   };
 
@@ -79,7 +80,6 @@ export const EventProvider = ({ children }) => {
   };
 
   const handleDeleteEvent = (eventId) => {
-    console.log('deleteEvent', eventId);
     deleteEvent(eventId);
   };
 
@@ -88,7 +88,7 @@ export const EventProvider = ({ children }) => {
     selectedEvent,
     errorResponse,
     setSelectedEvent,
-    handleSelectEvent,
+    onSelectEvent,
     handleAddOrUpdateEvent,
     handleDeleteEvent,
     handleCheckboxChange,
