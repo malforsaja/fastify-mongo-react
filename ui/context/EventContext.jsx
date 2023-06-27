@@ -87,6 +87,7 @@ export const EventProvider = ({ children }) => {
     selectedEventId,
     selectedEvent,
     errorResponse,
+    setSelectedEvent,
     handleSelectEvent,
     handleAddOrUpdateEvent,
     handleDeleteEvent,

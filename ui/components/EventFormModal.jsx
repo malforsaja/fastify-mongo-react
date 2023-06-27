@@ -6,24 +6,34 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchema } from "../utils/validations";
 import { red } from "@mui/material/colors";
-import { useEventContext } from "../context/EventContext";
+import { useEffect } from "react";
 
-const EventFormModal = ({ handleClose, isOpen }) => {
-  const { handleSubmit, control, formState: { errors } } = useForm({
+const EventFormModal = ({ event, onSubmit, onDelete, handleClose, isOpen, errorResponse }) => {
+  const { handleSubmit, register, control, formState: { errors }, setValue } = useForm({
     resolver: zodResolver(validationSchema)
   });
 
-  const {
-    selectedEvent: event,
-    errorResponse,
-    handleAddOrUpdateEvent,
-    handleDeleteEvent,
-  } = useEventContext();
-
   const handleFormSubmit = (data) => {
-    handleAddOrUpdateEvent({ ...event, ...data });
+    onSubmit({ ...event, ...data });
   };
 
+  const handleFormDelete = () => {
+    onDelete(event);
+  };
+
+  useEffect(() => {
+    if (event) {
+      setValue("title", event.title || "");
+      setValue("notes", event.notes || "");
+      setValue("startTime", event.startTime ? new Date(event.startTime) : null);
+      setValue("endTime", event.endTime ? new Date(event.endTime) : null);
+    } else {
+      setValue("title", "");
+      setValue("notes", "");
+      setValue("startTime", null);
+      setValue("endTime", null);
+    }
+  }, [event, setValue]);
 
   console.log('event', event);
   return (
@@ -47,35 +57,30 @@ const EventFormModal = ({ handleClose, isOpen }) => {
               <Controller
                 name="title"
                 control={control}
-                defaultValue={event?.title || ""}
-                rules={{ required: "Title is required" }}
-                render={({ field }) => {
-                  console.log('field', field);
-                  return (
-                    <TextField
-                      style={{ marginBottom: -5 }}
-                      label="Title"
-                      {...field}
-                      fullWidth
-                      margin="normal"
-                      error={!!errors.title}
-                      helperText={errors.title?.message}
-                    />
-                  )
-                }}
+                render={({ field }) => (
+                  <TextField
+                    style={{ marginBottom: -5 }}
+                    label="Title"
+                    {...field}
+                    {...register("title", { required: "Title is required" })}
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.title}
+                    helperText={errors.title?.message}
+                  />
+                )}
               />
 
               <Controller
                 name="notes"
                 control={control}
-                defaultValue={event?.notes || ""}
-                rules={{ required: false }}
                 render={({ field }) => (
                   <TextField
                     style={{ marginBottom: 10 }}
                     label="Notes"
                     multiline
                     {...field}
+                    {...register("notes", { required: false })}
                     fullWidth
                     margin="normal"
                     error={!!errors.notes}
@@ -88,7 +93,6 @@ const EventFormModal = ({ handleClose, isOpen }) => {
               <Controller
                 name="startTime"
                 control={control}
-                defaultValue={event?.startTime ? new Date(event.startTime) : null}
                 rules={{
                   required: "Start Time is required"
                 }}
@@ -120,7 +124,6 @@ const EventFormModal = ({ handleClose, isOpen }) => {
               <Controller
                 name="endTime"
                 control={control}
-                defaultValue={event?.endTime ? new Date(event.endTime) : null}
                 rules={{ required: "End Time is required" }}
                 render={({ field }) => (
                   <DateTimePicker
@@ -153,7 +156,7 @@ const EventFormModal = ({ handleClose, isOpen }) => {
               </Button>
 
               {event && (
-                <Button onClick={() => handleDeleteEvent(event.id)} variant="outlined">
+                <Button onClick={handleFormDelete} variant="outlined">
                   Delete
                 </Button>
               )}

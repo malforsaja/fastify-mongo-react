@@ -9,26 +9,20 @@ import { QueryKeys } from '../utils/queryKeys'
 import { Error } from "./ErrorComponent";
 import 'react-toastify/dist/ReactToastify.css';
 import { CalendarUI } from "./CalendarUI";
-import { useEventContext } from "../context/EventContext";
 
 export const EventManagement = () => {
-  //const [selectedEventId, setSelectedEventId] = useState('');
+  const [selectedEventId, setSelectedEventId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  //const [errorResponse, setErrorResponse] = useState(null);
-  //const [selectedEvent, setSelectedEvent] = useState(null);
+  const [errorResponse, setErrorResponse] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const queryClient = useQueryClient();
 
-  const {
-    selectedEventId,
-    selectedEvent,
-    errorResponse,
-  } = useEventContext();
-
-  /* const { mutate: createEvent } = useMutation((event) => createEventFn(event), {
+  const { mutate: createEvent } = useMutation((event) => createEventFn(event), {
     onSuccess: () => {
       // Invalidate and refetch
+      setSelectedEvent(null);
       queryClient.invalidateQueries({ queryKey: [QueryKeys.EVENTS] })
       toast.success('Event created successfully');
-      //setSelectedEvent(null);
       setErrorResponse(null);
     },
     onError: (error) => {
@@ -41,9 +35,9 @@ export const EventManagement = () => {
     updateEventFn(event),
     {
       onSuccess: () => {
+        setSelectedEvent(null);
         queryClient.invalidateQueries([QueryKeys.EVENTS]);
         toast.success('Event updated successfully');
-        //setSelectedEvent(null);
         setErrorResponse(null);
       },
       onError: (error) => {
@@ -55,15 +49,15 @@ export const EventManagement = () => {
 
   const { mutate: deleteEvent } = useMutation((id) => deleteEventFn(id), {
     onSuccess() {
+      setSelectedEvent(null);
       queryClient.invalidateQueries([QueryKeys.EVENTS]);
       toast.success('Event deleted successfully');
-      //setSelectedEvent(null);
     },
     onError(error) {
       setErrorResponse(error.response.data);
       toast.error(error.response.data.message);
     },
-  }); */
+  });
 
   const { isLoading, error, data } = useQuery({
     queryKey: [QueryKeys.EVENTS],
@@ -79,6 +73,33 @@ export const EventManagement = () => {
     return <Error message={error.message} />;
   }
 
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event);
+  };
+
+  const handleAddOrUpdateEvent = (event) => {
+    if (!event.id) {
+      createEvent(event)
+    } else {
+      console.log('update event', event);
+      updateEvent(event)
+    }
+  };
+
+  const handleDeleteEvent = (event) => {
+    deleteEvent(event.id);
+  };
+
+  const handleCheckboxChange = (e) => {
+    const eventId = e.target.value;
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      setSelectedEventId(eventId);
+    } else {
+      setSelectedEventId('');
+    }
+  };
+
   const handleOpen = () => {
     setIsOpen(true);
   };
@@ -88,20 +109,23 @@ export const EventManagement = () => {
 
   return (
     <div>
-      {console.log('selected', selectedEventId)}
-      <Button variant={selectedEventId ? "outlined" : "contained"} onClick={handleOpen}>
-        {selectedEventId ? 'Edit' : 'Add'} Event
+      <Button variant={selectedEvent ? "outlined" : "contained"} onClick={handleOpen}>
+        {selectedEvent ? 'Edit' : 'Add'} Event
       </Button>
       <EventFormModal
-        //event={selectedEventId ? selectedEvent : null}
-        // onSubmit={() => handleAddOrUpdateEvent(selectedEvent)}
-        // onDelete={() => handleDeleteEvent(selectedEventId)}
+        event={selectedEvent}
+        onSubmit={handleAddOrUpdateEvent}
+        onDelete={handleDeleteEvent}
         handleClose={handleClose}
         isOpen={isOpen}
-        //errorResponse={errorResponse}
+        errorResponse={errorResponse}
       />
       <EventList
         events={data.data}
+        onSelectEvent={handleSelectEvent}
+        handleCheckboxChange={handleCheckboxChange}
+        selectedEventId={selectedEventId}
+        setSelectedEventId={setSelectedEventId}
       />
       <ToastContainer autoClose={3000} position="top-right" />
       <CalendarUI events={data.data} />

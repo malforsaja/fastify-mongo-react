@@ -1,30 +1,18 @@
 import { Checkbox, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { format } from "date-fns";
 import PropTypes from 'prop-types';
-import { useEventContext } from "../context/EventContext";
 
-const EventList = ({ events  }) => {
-  /* const handleListItemClick = (event) => {
-    const eventId = event.id;
-    //setSelectedEventId(eventId);
-    onSelectEvent(event);
-  }; */
-  const {
-    selectedEventId,
-    handleCheckboxChange,
-    handleSelectEvent,
-  } = useEventContext();
-
+const EventList = ({ events, onSelectEvent, handleCheckboxChange, selectedEventId  }) => {
   return (
     <div>
       <List>
         {events.map((event) => (
-          <ListItem key={event.id} onClick={() => handleSelectEvent(event)}>
+          <ListItem key={event.id} onClick={() => onSelectEvent(event)}>
             <Checkbox
               checked={event.id === selectedEventId}
               onChange={handleCheckboxChange}
               value={event.id}
-            />
+            />         
             <ListItemText
               primary={event.title}
               secondary={
@@ -52,10 +40,9 @@ const EventList = ({ events  }) => {
 
 EventList.propTypes = {
   events: PropTypes.array.isRequired,
-  //onSelectEvent: PropTypes.func.isRequired,
-  //handleCheckboxChange: PropTypes.func.isRequired,
-  //selectedEventId: PropTypes.string.isRequired,
-  //setSelectedEventId: PropTypes.func.isRequired
+  onSelectEvent: PropTypes.func.isRequired,
+  handleCheckboxChange: PropTypes.func.isRequired,
+  selectedEventId: PropTypes.string.isRequired
 };
 
 export { EventList }
